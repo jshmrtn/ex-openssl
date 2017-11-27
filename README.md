@@ -1,5 +1,7 @@
 # ExOpenssl
 
+[![pipeline status](https://gitlab.airatel.com/joshmartin/ex-openssl/badges/master/pipeline.svg)](https://gitlab.airatel.com/joshmartin/ex-openssl/commits/master)
+
 **TODO: Add description**
 
 ## Installation
@@ -18,4 +20,3 @@ end
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at [https://hexdocs.pm/ex_openssl](https://hexdocs.pm/ex_openssl).
-

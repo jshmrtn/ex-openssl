@@ -1,0 +1,136 @@
+# Select what we should cache
+variables:
+  MIX_ENV: test
+
+stages:
+  - deps
+  - build
+  - test
+  - coverage
+  - docs
+
+elixir:deps:
+  tags:
+    - docker
+    - joshmartin
+  stage: deps
+  image: elixir:1.5
+  before_script:
+    - mix local.hex --force
+    - mix local.rebar --force
+  script:
+    - mix deps.get
+  dependencies: []
+  artifacts:
+    paths:
+      - mix.lock
+      - deps
+  cache:
+    paths:
+    - ~/.hex/
+
+elixir:build:
+  tags:
+    - docker
+    - joshmartin
+  stage: build
+  image: elixir:1.5
+  before_script:
+    - mix local.hex --force
+    - mix local.rebar --force
+    - apt-get update
+    # - apt-get install -y autoconf automake gettext openssl
+    # - curl https://sh.rustup.rs | sh -s -- -y
+    # - export PATH="$HOME/.cargo/bin:$PATH"
+  script:
+    - mix compile
+  dependencies:
+    - elixir:deps
+  artifacts:
+    paths:
+      - mix.lock
+      - _build
+      - deps
+      - ~/.cargo
+  cache:
+    paths:
+      - ~/.cargo
+
+elixir:test:ex_unit:
+  tags:
+    - docker
+    - joshmartin
+  stage: test
+  image: elixir:1.5
+  before_script:
+    - mix local.hex --force
+    - mix local.rebar --force
+    - apt-get update
+    # - apt-get install -y autoconf automake gettext openssl
+    # - curl https://sh.rustup.rs | sh -s -- -y
+    # - export PATH="$HOME/.cargo/bin:$PATH"
+  script:
+    - mix test --cover
+  coverage: '/\[TOTAL\]\s+(\d+\.\d+)%/'
+  dependencies:
+    - elixir:build
+
+elixir:test:credo:
+  tags:
+    - docker
+    - joshmartin
+  stage: test
+  image: elixir:1.5
+  before_script:
+    - mix local.hex --force
+    - mix local.rebar --force
+    - apt-get update
+    # - apt-get install -y autoconf automake gettext openssl
+    # - curl https://sh.rustup.rs | sh -s -- -y
+    # - export PATH="$HOME/.cargo/bin:$PATH"
+  script:
+    - mix credo --strict
+  dependencies:
+    - elixir:build
+
+elixir:test:dialyzer:
+  tags:
+    - docker
+    - joshmartin
+  stage: test
+  image: elixir:1.5
+  before_script:
+    - mix local.hex --force
+    - mix local.rebar --force
+    - apt-get update
+    # - apt-get install -y autoconf automake gettext openssl
+    # - curl https://sh.rustup.rs | sh -s -- -y
+    # - export PATH="$HOME/.cargo/bin:$PATH"
+  script:
+    - mix dialyzer --halt-exit-status
+  dependencies:
+    - elixir:build
+  cache:
+    paths:
+    - ~/.mix/
+
+elixir:docs:ex_doc:
+  tags:
+    - docker
+    - joshmartin
+  stage: docs
+  image: elixir:1.5
+  before_script:
+    - mix local.hex --force
+    - mix local.rebar --force
+    - apt-get update
+    # - apt-get install -y autoconf automake gettext openssl
+    # - curl https://sh.rustup.rs | sh -s -- -y
+    # - export PATH="$HOME/.cargo/bin:$PATH"
+  script:
+    - mix docs
+  dependencies:
+    - elixir:build
+  artifacts:
+    paths:
+      - doc
