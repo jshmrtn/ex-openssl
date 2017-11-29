@@ -39,9 +39,9 @@ elixir:build:
     - mix local.hex --force
     - mix local.rebar --force
     - apt-get update
-    # - apt-get install -y autoconf automake gettext openssl
-    # - curl https://sh.rustup.rs | sh -s -- -y
-    # - export PATH="$HOME/.cargo/bin:$PATH"
+    - apt-get install -y autoconf automake gettext openssl
+    - curl https://sh.rustup.rs | sh -s -- -y
+    - export PATH="$HOME/.cargo/bin:$PATH"
   script:
     - mix compile
   dependencies:
@@ -66,9 +66,9 @@ elixir:test:ex_unit:
     - mix local.hex --force
     - mix local.rebar --force
     - apt-get update
-    # - apt-get install -y autoconf automake gettext openssl
-    # - curl https://sh.rustup.rs | sh -s -- -y
-    # - export PATH="$HOME/.cargo/bin:$PATH"
+    - apt-get install -y autoconf automake gettext openssl
+    - curl https://sh.rustup.rs | sh -s -- -y
+    - export PATH="$HOME/.cargo/bin:$PATH"
   script:
     - mix test --cover
   coverage: '/\[TOTAL\]\s+(\d+\.\d+)%/'
@@ -85,9 +85,9 @@ elixir:test:credo:
     - mix local.hex --force
     - mix local.rebar --force
     - apt-get update
-    # - apt-get install -y autoconf automake gettext openssl
-    # - curl https://sh.rustup.rs | sh -s -- -y
-    # - export PATH="$HOME/.cargo/bin:$PATH"
+    - apt-get install -y autoconf automake gettext openssl
+    - curl https://sh.rustup.rs | sh -s -- -y
+    - export PATH="$HOME/.cargo/bin:$PATH"
   script:
     - mix credo --strict
   dependencies:
@@ -103,9 +103,9 @@ elixir:test:dialyzer:
     - mix local.hex --force
     - mix local.rebar --force
     - apt-get update
-    # - apt-get install -y autoconf automake gettext openssl
-    # - curl https://sh.rustup.rs | sh -s -- -y
-    # - export PATH="$HOME/.cargo/bin:$PATH"
+    - apt-get install -y autoconf automake gettext openssl
+    - curl https://sh.rustup.rs | sh -s -- -y
+    - export PATH="$HOME/.cargo/bin:$PATH"
   script:
     - mix dialyzer --halt-exit-status
   dependencies:
@@ -124,9 +124,9 @@ elixir:docs:ex_doc:
     - mix local.hex --force
     - mix local.rebar --force
     - apt-get update
-    # - apt-get install -y autoconf automake gettext openssl
-    # - curl https://sh.rustup.rs | sh -s -- -y
-    # - export PATH="$HOME/.cargo/bin:$PATH"
+    - apt-get install -y autoconf automake gettext openssl
+    - curl https://sh.rustup.rs | sh -s -- -y
+    - export PATH="$HOME/.cargo/bin:$PATH"
   script:
     - mix docs
   dependencies:

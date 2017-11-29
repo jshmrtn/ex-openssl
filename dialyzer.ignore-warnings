@@ -1,0 +1,5 @@
+Invalid type specification for function 'Elixir.ExOpenssl.Crypto.PKCS7':decrypt/3. The success typing is ('Elixir.ExOpenssl.Crypto.PKCS7':pkcs7(),reference(),reference()) -> {'error',_} | {'ok',binary()}
+Invalid type specification for function 'Elixir.ExOpenssl.Crypto.PKCS7':sign/5. The success typing is (reference(),reference(),maybe_improper_list(),binary(),[any()]) -> any()
+Invalid type specification for function 'Elixir.ExOpenssl.Crypto.PKCS7.SMIME':write/3. The success typing is (reference(),binary(),[any()]) -> {'error',_} | {'ok',binary()}
+Invalid type specification for function 'Elixir.ExOpenssl.Errors.Error':exception/1. The success typing is (#{'__struct__':='Elixir.ExOpenssl.Errors.Error', _=>_}) -> #{'__struct__':='Elixir.ExOpenssl.Errors.Error', _=>_}
+The call erlang:load_nif(_@1::<<_:64,_:_*8>>,_@2::any()) breaks the contract (Path,LoadInfo) -> 'ok' | Error when Path :: string(), LoadInfo :: term(), Error :: {'error',{Reason,Text::string()}}, Reason :: 'load_failed' | 'bad_lib' | 'load' | 'reload' | 'upgrade' | 'old_code'
