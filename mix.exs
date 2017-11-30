@@ -32,7 +32,7 @@ defmodule ExOpenssl.Mixfile do
 
   defp package do
     [
-      name: :ex_gpgme,
+      name: :ex_openssl,
       files: ["lib", "mix.exs", "README*", "LICENSE"],
       maintainers: ["airatel Inc.", "Jonatan Männchen"],
       licenses: ["MIT"],
