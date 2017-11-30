@@ -1,0 +1,28 @@
+language: elixir
+sudo: false
+addons:
+  apt:
+    packages:
+      - autoconf
+      - automake
+      - gettext
+      - openssl
+elixir:
+  - 1.5.2
+otp_release:
+  - 20.0
+env:
+  global:
+    - GPGME_DEBUG=9
+    - AUTOMAKE_VERSION=1.14.1
+    - GETTEXT_VERSION=0.19.3
+before_install:
+  - curl https://sh.rustup.rs | sh -s -- -y
+  - export PATH="$HOME/.cargo/bin:$PATH"
+after_script:
+  - MIX_ENV=docs mix deps.get
+  - MIX_ENV=docs mix inch.report
+notifications:
+  email:
+    on_success: change
+    on_failure: change
