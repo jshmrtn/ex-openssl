@@ -13,7 +13,7 @@ defmodule ExOpenssl.Mixfile do
       description: description(),
       package: package(),
       dialyzer: [ignore_warnings: "dialyzer.ignore-warnings"],
-      compilers: [:rustler] ++ Mix.compilers,
+      compilers: compilers(:os.type()),
       rustler_crates: rustler_crates(),
     ]
   end
@@ -40,6 +40,13 @@ defmodule ExOpenssl.Mixfile do
     ]
   end
 
+  defp compilers({:unix, :darwin}) do
+    Mix.compilers ++ [:ex_openssl_darwin]
+  end
+  defp compilers(_) do
+    [:rustler] ++ Mix.compilers
+  end
+
   defp rustler_crates do
     [
       exopenssl: [
@@ -51,7 +58,7 @@ defmodule ExOpenssl.Mixfile do
 
   defp deps do
     [
-      {:rustler, "~> 0.10.1"},
+      {:rustler, github: "hansihe/rustler", ref: "fab43dc8f144d26201822e193da6543fce961917", sparse: "rustler_mix"},
       {:ex_doc, ">= 0.0.0", only: [:dev, :test], runtime: false},
       {:inch_ex, only: :docs, runtime: false},
       {:credo, "~> 0.5", only: [:dev, :test], runtime: false},

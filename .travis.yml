@@ -1,5 +1,5 @@
 language: elixir
-sudo: false
+
 addons:
   apt:
     packages:
@@ -7,21 +7,41 @@ addons:
       - automake
       - gettext
       - openssl
+
 elixir:
   - 1.5.2
 otp_release:
-  - 20.0
-env:
-  global:
-    - GPGME_DEBUG=9
-    - AUTOMAKE_VERSION=1.14.1
-    - GETTEXT_VERSION=0.19.3
-before_install:
-  - curl https://sh.rustup.rs | sh -s -- -y
-  - export PATH="$HOME/.cargo/bin:$PATH"
-after_script:
-  - MIX_ENV=docs mix deps.get
-  - MIX_ENV=docs mix inch.report
+  - 20.1
+
+matrix:
+  include:
+    - os: linux
+      sudo: false
+      before_install:
+        - curl https://sh.rustup.rs | sh -s -- -y
+        - export PATH="$HOME/.cargo/bin:$PATH"
+      script:
+        - mix test
+        - mix credo --strict
+        - mix dialyzer --bail
+      after_script:
+        - MIX_ENV=docs mix deps.get
+        - MIX_ENV=docs mix inch.report
+    - os: osx
+      language: generic
+      before_install:
+        - curl https://sh.rustup.rs | sh -s -- -y
+        - export PATH="$HOME/.cargo/bin:$PATH"
+        - brew update
+        - brew install autoconf automake gettext gpgme openssl elixir
+        - mix local.hex --force
+        - mix local.rebar --force
+        - mix deps.get
+      script:
+        - mix test
+        - mix credo --strict
+        - mix dialyzer --bail
+
 notifications:
   email:
     on_success: change

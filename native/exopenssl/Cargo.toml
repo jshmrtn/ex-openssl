@@ -3,13 +3,16 @@ name = "exopenssl"
 version = "0.1.0"
 authors = []
 
+[features]
+alternative_nif_init_name = []
+
 [lib]
 name = "exopenssl"
 path = "src/lib.rs"
-crate-type = ["dylib"]
+crate-type = ["staticlib", "dylib"]
 
 [dependencies]
-rustler = "0.15.1"
-rustler_codegen = "0.15.1"
+rustler = { git = "https://github.com/hansihe/rustler.git" } #"0.15.1"
+rustler_codegen = { git = "https://github.com/hansihe/rustler.git" }
 lazy_static = "0.2"
 openssl = { git = "https://github.com/jshmrtn/rust-openssl.git", branch = "feature/pkcs7" }
