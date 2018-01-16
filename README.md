@@ -12,7 +12,7 @@ The package can be installed by adding `ex_openssl` to your list of dependencies
 ```elixir
 def deps do
   [
-    {:ex_openssl, "~> 0.1.0"}
+    {:ex_openssl, "~> 0.1.2"}
   ]
 end
 ```
