@@ -3,10 +3,11 @@ defmodule ExOpenssl.Crypto.PKCS7.SMIME do
   PKCS7 SMIME Output Handling Encryption
   """
 
+  alias ExOpenssl.Crypto.PKCS7
+  alias ExOpenssl.Errors.Error
   alias ExOpenssl.Nif
   alias ExOpenssl.Util
-  alias ExOpenssl.Errors.Error
-  alias ExOpenssl.Crypto.PKCS7
+
   require ExOpenssl.Util
 
   @type bcount :: binary

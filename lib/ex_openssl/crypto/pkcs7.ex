@@ -3,12 +3,13 @@ defmodule ExOpenssl.Crypto.PKCS7 do
   PKCS7 Handling. See `ExOpenssl.Crypto.PKCS7` for IO.
   """
 
-  alias ExOpenssl.Nif
   alias ExOpenssl.Crypto.X509
-  alias ExOpenssl.Util
-  alias ExOpenssl.Symm.Cipher
-  alias ExOpenssl.PKey
   alias ExOpenssl.Errors.Error
+  alias ExOpenssl.Nif
+  alias ExOpenssl.PKey
+  alias ExOpenssl.Symm.Cipher
+  alias ExOpenssl.Util
+
   require ExOpenssl.Util
 
   @opaque pkcs7 :: reference

@@ -3,9 +3,10 @@ defmodule ExOpenssl.Crypto.X509 do
   Handle X509 Certificates
   """
 
-  alias ExOpenssl.Nif
   alias ExOpenssl.Errors.Error
+  alias ExOpenssl.Nif
   alias ExOpenssl.Util
+
   require ExOpenssl.Util
 
   @typedoc """

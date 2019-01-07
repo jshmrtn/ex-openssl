@@ -3,9 +3,10 @@ defmodule ExOpenssl.PKey do
   Private Key Handling
   """
 
-  alias ExOpenssl.Nif
   alias ExOpenssl.Errors.Error
+  alias ExOpenssl.Nif
   alias ExOpenssl.Util
+
   require ExOpenssl.Util
 
   @typedoc """
