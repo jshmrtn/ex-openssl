@@ -2,14 +2,15 @@
 name = "exopenssl"
 version = "0.1.0"
 authors = []
+edition = "2018"
 
 [lib]
 name = "exopenssl"
 path = "src/lib.rs"
-crate-type = ["dylib"]
+crate-type = ["cdylib"]
 
 [dependencies]
-rustler = "0.15.1"
-rustler_codegen = "0.15.1"
-lazy_static = "0.2"
+rustler = "0.20.0"
+rustler_codegen = "0.20.0"
+lazy_static = "1.2"
 openssl = { git = "https://github.com/jshmrtn/rust-openssl.git", branch = "feature/pkcs7" }

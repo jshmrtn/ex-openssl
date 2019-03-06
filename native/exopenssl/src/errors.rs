@@ -1,10 +1,10 @@
-use rustler::{NifEnv, NifTerm, NifEncoder};
+use rustler::{Env, Term, Encoder};
 use openssl::error::{Error, ErrorStack};
 use rustler::types::atom::nil;
 use rustler::types::elixir_struct;
 
 mod atoms {
-    rustler_atoms! {
+    rustler::rustler_atoms! {
         atom __exception__;
         atom code;
         atom file;
@@ -16,14 +16,14 @@ mod atoms {
     }
 }
 
-pub fn to_term<'a>(stack: ErrorStack, env: NifEnv<'a>) -> Vec<NifTerm<'a>> {
+pub fn to_term<'a>(stack: ErrorStack, env: Env<'a>) -> Vec<Term<'a>> {
     stack.errors()
         .iter()
         .map(| error | error_to_struct(error, env))
         .collect()
 }
 
-fn error_to_struct<'a>(error: &Error, env: NifEnv<'a>) -> NifTerm<'a> {
+fn error_to_struct<'a>(error: &Error, env: Env<'a>) -> Term<'a> {
     let exception_atom = atoms::__exception__().encode(env);
     let code_atom = atoms::code().encode(env);
     let file_atom = atoms::file().encode(env);
