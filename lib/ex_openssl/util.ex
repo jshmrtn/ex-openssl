@@ -7,12 +7,15 @@ defmodule ExOpenssl.Util do
     alias ExOpenssl.Util
 
     raising_name = String.to_atom("#{name}!")
+
     doc = """
     See `#{name}/#{arity}`
     """
-    args = Enum.map(1..arity, fn i ->
-      {String.to_atom("arg#{i}"), [], ExOpenssl.Util}
-    end)
+
+    args =
+      Enum.map(1..arity, fn i ->
+        {String.to_atom("arg#{i}"), [], ExOpenssl.Util}
+      end)
 
     {
       :__block__,
@@ -56,5 +59,5 @@ defmodule ExOpenssl.Util do
   end
 
   def handle_response({:ok, ok}), do: ok
-  def handle_response({:error, [error | _]}), do: raise Error, error
+  def handle_response({:error, [error | _]}), do: raise(Error, error)
 end

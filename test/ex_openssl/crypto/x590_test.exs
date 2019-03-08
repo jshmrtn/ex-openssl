@@ -7,9 +7,11 @@ defmodule ExOpenssl.Crypto.X509Test do
   use ExUnit.Case
   alias ExOpenssl.Crypto.X509
   alias ExOpenssl.Errors.Error
-  doctest X509, except: [
-    from_pem: 1,
-  ]
+
+  doctest X509,
+    except: [
+      from_pem: 1
+    ]
 
   describe "from_pem/1" do
     test "parses correct cert" do
@@ -21,10 +23,11 @@ defmodule ExOpenssl.Crypto.X509Test do
     test "gives error on invalid" do
       assert {:error, errors} = X509.from_pem(@bad_cert)
       assert is_list(errors)
+
       assert Enum.all?(errors, fn
-        %Error{} -> true
-        _ -> false
-      end)
+               %Error{} -> true
+               _ -> false
+             end)
     end
   end
 

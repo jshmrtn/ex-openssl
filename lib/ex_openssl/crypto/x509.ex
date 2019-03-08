@@ -3,15 +3,16 @@ defmodule ExOpenssl.Crypto.X509 do
   Handle X509 Certificates
   """
 
-  alias ExOpenssl.Nif
   alias ExOpenssl.Errors.Error
+  alias ExOpenssl.Nif
   alias ExOpenssl.Util
+
   require ExOpenssl.Util
 
   @typedoc """
   Pem encoded certificate string.
   """
-  @type pem :: String.t
+  @type pem :: String.t()
 
   @opaque certificate :: reference
 
@@ -41,7 +42,7 @@ defmodule ExOpenssl.Crypto.X509 do
          reason: "configuration file routines"}]}
 
   """
-  @spec from_pem(pem :: pem) :: {:ok, [certificate]} | {:error, [Error.t]}
+  @spec from_pem(pem :: pem) :: {:ok, [certificate]} | {:error, [Error.t()]}
   def from_pem(pem) when is_binary(pem),
     do: Nif.pem_read_x509(pem)
 

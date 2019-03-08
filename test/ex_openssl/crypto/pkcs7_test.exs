@@ -9,10 +9,12 @@ defmodule ExOpenssl.Crypto.PKCS7Test do
   alias ExOpenssl.Crypto.PKCS7.SMIME
   alias ExOpenssl.Crypto.X509
   alias ExOpenssl.PKey
-  doctest PKCS7, except: [
-    sign: 5,
-    encrypt: 4,
-  ]
+
+  doctest PKCS7,
+    except: [
+      sign: 5,
+      encrypt: 4
+    ]
 
   describe "encrypt/5" do
     test "encrypts / decrypts correctly" do
@@ -21,9 +23,10 @@ defmodule ExOpenssl.Crypto.PKCS7Test do
       cleartext = "Foo"
       assert {:ok, pkcs7} = PKCS7.encrypt([recipient], cleartext, :des_ede3_cbc)
 
-      {pkcs7, _} = pkcs7
-      |> SMIME.write!(cleartext)
-      |> SMIME.read!
+      {pkcs7, _} =
+        pkcs7
+        |> SMIME.write!(cleartext)
+        |> SMIME.read!()
 
       assert {:ok, ^cleartext} = PKCS7.decrypt(pkcs7, pkey, recipient)
     end

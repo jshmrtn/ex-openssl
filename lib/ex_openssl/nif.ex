@@ -13,7 +13,8 @@ defmodule ExOpenssl.Nif do
 
   def pkcs7_sign(_signcert, _pkey, _certs, _input, _flags), do: :erlang.nif_error(:nif_not_loaded)
 
-  def pkcs7_verify(_pkcs7, _certs, _store, _indata, _flags), do: :erlang.nif_error(:nif_not_loaded)
+  def pkcs7_verify(_pkcs7, _certs, _store, _indata, _flags),
+    do: :erlang.nif_error(:nif_not_loaded)
 
   def smime_write_pkcs7(_pkcs7, _data, _flags), do: :erlang.nif_error(:nif_not_loaded)
 

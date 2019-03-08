@@ -8,13 +8,13 @@ defmodule ExOpenssl.Mixfile do
       app: :ex_openssl,
       version: "0.1.2",
       elixir: "~> 1.5",
-      start_permanent: Mix.env == :prod,
+      start_permanent: Mix.env() == :prod,
       deps: deps(),
       description: description(),
       package: package(),
       dialyzer: [ignore_warnings: "dialyzer.ignore-warnings"],
-      compilers: [:rustler] ++ Mix.compilers,
-      rustler_crates: rustler_crates(),
+      compilers: [:rustler] ++ Mix.compilers(),
+      rustler_crates: rustler_crates()
     ]
   end
 
@@ -44,7 +44,7 @@ defmodule ExOpenssl.Mixfile do
     [
       exopenssl: [
         path: "native/exopenssl",
-        mode: (if Mix.env == :prod, do: :release, else: :debug),
+        mode: if(Mix.env() == :prod, do: :release, else: :debug)
       ]
     ]
   end
@@ -55,7 +55,7 @@ defmodule ExOpenssl.Mixfile do
       {:ex_doc, ">= 0.0.0", only: [:dev, :test], runtime: false},
       {:inch_ex, only: :docs, runtime: false},
       {:credo, "~> 0.5", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 0.4", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 0.4", only: [:dev, :test], runtime: false}
     ]
   end
 end

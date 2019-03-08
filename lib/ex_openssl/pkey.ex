@@ -3,15 +3,16 @@ defmodule ExOpenssl.PKey do
   Private Key Handling
   """
 
-  alias ExOpenssl.Nif
   alias ExOpenssl.Errors.Error
+  alias ExOpenssl.Nif
   alias ExOpenssl.Util
+
   require ExOpenssl.Util
 
   @typedoc """
   Pem encoded certificate string.
   """
-  @type pem :: String.t
+  @type pem :: String.t()
 
   @opaque key :: reference
 
@@ -41,7 +42,7 @@ defmodule ExOpenssl.PKey do
          reason: "configuration file routines"}]}
 
   """
-  @spec from_pem(pem :: pem) :: {:ok, key} | {:error, [Error.t]}
+  @spec from_pem(pem :: pem) :: {:ok, key} | {:error, [Error.t()]}
   def from_pem(pem) when is_binary(pem),
     do: Nif.pem_read_private_key(pem)
 
