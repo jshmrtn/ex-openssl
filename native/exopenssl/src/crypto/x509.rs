@@ -1,14 +1,14 @@
 use openssl::x509::X509;
-use rustler::{NifEnv, NifTerm, NifResult, NifEncoder};
+use rustler::{Env, Term, NifResult, Encoder};
 use rustler::resource::ResourceArc;
-use errors::to_term as error_stack_to_term;
+use crate::errors::to_term as error_stack_to_term;
 use openssl::stack::Stack;
 use openssl::error::ErrorStack;
 use openssl::x509::store::X509Store;
 use openssl::x509::store::X509StoreBuilder;
 
 mod atoms {
-    rustler_atoms! {
+    rustler::rustler_atoms! {
         atom ok;
         atom error;
     }
@@ -27,8 +27,8 @@ fn cert_to_resource(cert: &X509) -> ResourceArc<X509Resource> {
     })
 }
 
-pub fn pem_read<'a>(env: NifEnv<'a>, args: &[NifTerm<'a>]) -> NifResult<NifTerm<'a>> {
-    let pem: String = try!(args[0].decode());
+pub fn pem_read<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
+    let pem: String = args[0].decode()?;
 
     match X509::stack_from_pem(pem.as_bytes()) {
         Ok(certs) => {

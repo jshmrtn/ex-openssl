@@ -1,16 +1,11 @@
-#[macro_use] extern crate rustler;
-// #[macro_use] extern crate rustler_codegen;
-#[macro_use] extern crate lazy_static;
-extern crate openssl;
-
 pub mod crypto;
 mod errors;
 mod symm;
 pub mod pkey;
 
-use rustler::{NifEnv, NifTerm};
+use rustler::{Env, Term};
 
-rustler_export_nifs! {
+rustler::rustler_export_nifs! {
     "Elixir.ExOpenssl.Nif",
     [
         ("pem_read_x509", 1, crypto::x509::pem_read),
@@ -25,9 +20,9 @@ rustler_export_nifs! {
     Some(on_load)
 }
 
-fn on_load<'a>(env: NifEnv<'a>, _load_info: NifTerm<'a>) -> bool {
-    resource_struct_init!(crypto::x509::X509Resource, env);
-    resource_struct_init!(pkey::PKeyResource, env);
-    resource_struct_init!(crypto::pkcs7::PKCS7Resource, env);
+fn on_load(env: Env, _load_info: Term) -> bool {
+    rustler::resource_struct_init!(crypto::x509::X509Resource, env);
+    rustler::resource_struct_init!(pkey::PKeyResource, env);
+    rustler::resource_struct_init!(crypto::pkcs7::PKCS7Resource, env);
     true
 }

@@ -1,10 +1,10 @@
 use openssl::pkey::PKey;
-use rustler::{NifEnv, NifTerm, NifResult, NifEncoder};
+use rustler::{Env, Term, NifResult, Encoder};
 use rustler::resource::ResourceArc;
-use errors::to_term as error_stack_to_term;
+use crate::errors::to_term as error_stack_to_term;
 
 mod atoms {
-    rustler_atoms! {
+    rustler::rustler_atoms! {
         atom ok;
         atom error;
     }
@@ -23,8 +23,8 @@ fn key_to_resource(key: PKey) -> ResourceArc<PKeyResource> {
     })
 }
 
-pub fn pem_read<'a>(env: NifEnv<'a>, args: &[NifTerm<'a>]) -> NifResult<NifTerm<'a>> {
-    let pem: String = try!(args[0].decode());
+pub fn pem_read<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
+    let pem: String = args[0].decode()?;
 
     match PKey::private_key_from_pem(pem.as_bytes()) {
         Ok(pkey) => {

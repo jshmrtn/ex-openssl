@@ -1,22 +1,22 @@
-use rustler::{NifEnv, NifTerm, NifResult, NifEncoder, NifError};
+use rustler::{Env, Term, NifResult, Encoder, Error};
 use openssl::crypto::pkcs7::pk7_smime::PKCS7;
-use errors::to_term as error_stack_to_term;
-use crypto::pkcs7::pkcs7_to_resource;
+use crate::errors::to_term as error_stack_to_term;
+use crate::crypto::pkcs7::pkcs7_to_resource;
 use rustler::resource::ResourceArc;
-use crypto::pkcs7::PKCS7Resource;
-use crypto::pkcs7::decode_flags;
-use rustler::types::atom::NifAtom;
+use crate::crypto::pkcs7::PKCS7Resource;
+use crate::crypto::pkcs7::decode_flags;
+use rustler::types::atom::Atom;
 use openssl::crypto::pkcs7::pk7_smime::PKCS7Flags;
 use std::ops::Deref;
 
 mod atoms {
-    rustler_atoms! {
+    rustler::rustler_atoms! {
         atom ok;
         atom error;
     }
 }
 
-pub fn read<'a>(env: NifEnv<'a>, args: &[NifTerm<'a>]) -> NifResult<NifTerm<'a>> {
+pub fn read<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
     let data: String = args[0].decode()?;
     let mut bcount: Vec<u8> = Vec::new();
 
@@ -26,14 +26,14 @@ pub fn read<'a>(env: NifEnv<'a>, args: &[NifTerm<'a>]) -> NifResult<NifTerm<'a>>
     }
 }
 
-pub fn write<'a>(env: NifEnv<'a>, args: &[NifTerm<'a>]) -> NifResult<NifTerm<'a>> {
+pub fn write<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
     let pkcs7_arc: ResourceArc<PKCS7Resource> = args[0].decode()?;
     let pkcs7 = &pkcs7_arc.deref().pkcs7;
 
     let data: String = args[1].decode()?;
 
-    if args[2].decode::<Vec<NifAtom>>()?.len() < 1 {
-        return Err(NifError::BadArg);
+    if args[2].decode::<Vec<Atom>>()?.len() < 1 {
+        return Err(Error::BadArg);
     }
 
     let flags: PKCS7Flags = decode_flags(args[2].decode()?, env)?;

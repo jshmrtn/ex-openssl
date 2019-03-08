@@ -4,24 +4,23 @@ pub mod smime;
 
 use openssl::symm::Cipher;
 use openssl::crypto::pkcs7::pk7_smime::PKCS7;
-use rustler::{NifEnv, NifTerm, NifResult, NifEncoder, NifError};
-use rustler::types::atom::NifAtom;
-use symm::cipher::decode_cypher;
-use crypto::x509::decode_stack;
-use crypto::x509::decode_store;
-use errors::to_term as error_stack_to_term;
+use rustler::{Env, Term, TermType, NifResult, Encoder, Error};
+use rustler::types::atom::Atom;
+use crate::symm::cipher::decode_cypher;
+use crate::crypto::x509::decode_stack;
+use crate::crypto::x509::decode_store;
+use crate::errors::to_term as error_stack_to_term;
 use rustler::resource::ResourceArc;
-use pkey::PKeyResource;
+use crate::pkey::PKeyResource;
 use openssl::pkey::PKey;
-use crypto::x509::X509Resource;
+use crate::crypto::x509::X509Resource;
 use openssl::x509::X509;
-use rustler::TermType;
 use openssl::crypto::pkcs7::pk7_smime;
 use openssl::crypto::pkcs7::pk7_smime::PKCS7Flags;
 use std::ops::Deref;
 
 mod atoms {
-    rustler_atoms! {
+    rustler::rustler_atoms! {
         atom ok;
         atom error;
     }
@@ -40,7 +39,7 @@ pub fn pkcs7_to_resource(pkcs7: PKCS7) -> ResourceArc<PKCS7Resource> {
     })
 }
 
-pub fn decode_flag(flag: &NifAtom, env: NifEnv) -> NifResult<PKCS7Flags> {
+pub fn decode_flag(flag: &Atom, env: Env) -> NifResult<PKCS7Flags> {
     let flag: String = flag.to_term(env).atom_to_string()?;
 
     match flag.as_str() {
@@ -61,11 +60,11 @@ pub fn decode_flag(flag: &NifAtom, env: NifEnv) -> NifResult<PKCS7Flags> {
         "partial" => Ok(pk7_smime::PKCS7_PARTIAL),
         "reuse_digest" => Ok(pk7_smime::PKCS7_REUSE_DIGEST),
         // "no_dual_content" => Ok(pk7_smime::PKCS7_NO_DUAL_CONTENT),
-        _ => Err(NifError::BadArg)
+        _ => Err(Error::BadArg)
     }
 }
 
-pub fn decode_flags(flags: Vec<NifAtom>, env: NifEnv) -> NifResult<PKCS7Flags> {
+pub fn decode_flags(flags: Vec<Atom>, env: Env) -> NifResult<PKCS7Flags> {
     flags
         .iter()
         .fold(Ok(PKCS7Flags::empty()), | acc, term | {
@@ -76,15 +75,15 @@ pub fn decode_flags(flags: Vec<NifAtom>, env: NifEnv) -> NifResult<PKCS7Flags> {
         })
 }
 
-pub fn encrypt<'a>(env: NifEnv<'a>, args: &[NifTerm<'a>]) -> NifResult<NifTerm<'a>> {
+pub fn encrypt<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
     match decode_stack(args[0].decode()?) {
         Ok(certs) => {
             let input: String = args[1].decode()?;
 
             let cipher: Cipher = decode_cypher(args[2].decode()?, env)?;
 
-            if args[3].decode::<Vec<NifAtom>>()?.len() < 1 {
-                return Err(NifError::BadArg);
+            if args[3].decode::<Vec<Atom>>()?.len() < 1 {
+                return Err(Error::BadArg);
             }
 
             let flags: PKCS7Flags = decode_flags(args[3].decode()?, env)?;
@@ -98,7 +97,7 @@ pub fn encrypt<'a>(env: NifEnv<'a>, args: &[NifTerm<'a>]) -> NifResult<NifTerm<'
     }
 }
 
-pub fn decrypt<'a>(env: NifEnv<'a>, args: &[NifTerm<'a>]) -> NifResult<NifTerm<'a>> {
+pub fn decrypt<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
     let pkcs7_arc: ResourceArc<PKCS7Resource> = args[0].decode()?;
     let pkcs7 = &pkcs7_arc.deref().pkcs7;
 
@@ -116,7 +115,7 @@ pub fn decrypt<'a>(env: NifEnv<'a>, args: &[NifTerm<'a>]) -> NifResult<NifTerm<'
     }
 }
 
-pub fn sign<'a>(env: NifEnv<'a>, args: &[NifTerm<'a>]) -> NifResult<NifTerm<'a>> {
+pub fn sign<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
     let sign_cert_arc: ResourceArc<X509Resource> = args[0].decode()?;
     let sign_cert = &sign_cert_arc.cert;
 
@@ -127,8 +126,8 @@ pub fn sign<'a>(env: NifEnv<'a>, args: &[NifTerm<'a>]) -> NifResult<NifTerm<'a>>
         Ok(certs) => {
             let input: String = args[3].decode()?;
 
-            if args[4].decode::<Vec<NifAtom>>()?.len() < 1 {
-                return Err(NifError::BadArg);
+            if args[4].decode::<Vec<Atom>>()?.len() < 1 {
+                return Err(Error::BadArg);
             }
 
             let flags: PKCS7Flags = decode_flags(args[4].decode()?, env)?;
@@ -142,12 +141,12 @@ pub fn sign<'a>(env: NifEnv<'a>, args: &[NifTerm<'a>]) -> NifResult<NifTerm<'a>>
     }
 }
 
-pub fn verify<'a>(env: NifEnv<'a>, args: &[NifTerm<'a>]) -> NifResult<NifTerm<'a>> {
+pub fn verify<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
     let pkcs7_arc: ResourceArc<PKCS7Resource> = args[0].decode()?;
     let pkcs7 = &pkcs7_arc.deref().pkcs7;
 
-    if args[4].decode::<Vec<NifAtom>>()?.len() < 1 {
-        return Err(NifError::BadArg);
+    if args[4].decode::<Vec<Atom>>()?.len() < 1 {
+        return Err(Error::BadArg);
     }
 
     let flags: PKCS7Flags = decode_flags(args[4].decode()?, env)?;
@@ -158,7 +157,7 @@ pub fn verify<'a>(env: NifEnv<'a>, args: &[NifTerm<'a>]) -> NifResult<NifTerm<'a
         Ok(certs) => {
             match decode_store(args[2].decode()?) {
                 Ok(store) => {
-                    let data_term: NifTerm = args[3].decode()?;
+                    let data_term: Term = args[3].decode()?;
 
                     match data_term.get_type() {
                         TermType::Atom => {
@@ -169,7 +168,7 @@ pub fn verify<'a>(env: NifEnv<'a>, args: &[NifTerm<'a>]) -> NifResult<NifTerm<'a
                                         Err(errors) => Ok((atoms::error(), error_stack_to_term(errors, env)).encode(env))
                                     }
                                 }
-                                _ => Err(NifError::BadArg)
+                                _ => Err(Error::BadArg)
                             }
                         },
                         TermType::Binary => {
@@ -179,7 +178,7 @@ pub fn verify<'a>(env: NifEnv<'a>, args: &[NifTerm<'a>]) -> NifResult<NifTerm<'a
                                 Err(errors) => Ok((atoms::error(), error_stack_to_term(errors, env)).encode(env))
                             }
                         },
-                        _ => Err(NifError::BadArg)
+                        _ => Err(Error::BadArg)
                     }
                 },
                 Err(errors) => Ok((atoms::error(), error_stack_to_term(errors, env)).encode(env))
