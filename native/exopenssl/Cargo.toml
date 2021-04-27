@@ -10,7 +10,7 @@ path = "src/lib.rs"
 crate-type = ["cdylib"]
 
 [dependencies]
-rustler = "0.20.0"
-rustler_codegen = "0.20.0"
+rustler = "0.21.1"
+rustler_codegen = "0.21.1"
 lazy_static = "1.2"
 openssl = { git = "https://github.com/jshmrtn/rust-openssl.git", branch = "feature/pkcs7" }
