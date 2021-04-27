@@ -38,9 +38,9 @@ dependencies = [
 
 [[package]]
 name = "bitflags"
-version = "0.9.1"
+version = "1.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4efd02e230a02e18f92fc2735f44597385ed02ad8f831e7c1c1156ee5e1ab3a5"
+checksum = "cf1de2fe8c75bc145a2f577add951f8134889b4795d47466a54a5c846d691693"
 
 [[package]]
 name = "cc"
@@ -58,7 +58,7 @@ checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 name = "exopenssl"
 version = "0.1.0"
 dependencies = [
- "lazy_static 1.4.0",
+ "lazy_static",
  "openssl",
  "rustler",
  "rustler_codegen",
@@ -105,12 +105,6 @@ dependencies = [
 
 [[package]]
 name = "lazy_static"
-version = "0.2.11"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "76f033c7ad61445c5b347c7382dd1237847eb1bce590fe50365dcb33d546be73"
-
-[[package]]
-name = "lazy_static"
 version = "1.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646"
@@ -138,22 +132,32 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a9a7ab5d64814df0fe4a4b5ead45ed6c5f181ee3ff04ba344313a6c80446c5d4"
 
 [[package]]
+name = "once_cell"
+version = "1.7.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "af8b08b04175473088b46763e51ee54da5f9a164bc162f615b91bc179dbf15a3"
+
+[[package]]
 name = "openssl"
-version = "0.9.21"
-source = "git+https://github.com/jshmrtn/rust-openssl.git?branch=feature/pkcs7#fbc5d4a3d96af9979856c7c3b4f9a3565d55d4f8"
+version = "0.10.33"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a61075b62a23fef5a29815de7536d940aa35ce96d18ce0cc5076272db678a577"
 dependencies = [
  "bitflags",
+ "cfg-if",
  "foreign-types",
- "lazy_static 0.2.11",
  "libc",
+ "once_cell",
  "openssl-sys",
 ]
 
 [[package]]
 name = "openssl-sys"
-version = "0.9.21"
-source = "git+https://github.com/jshmrtn/rust-openssl.git?branch=feature/pkcs7#fbc5d4a3d96af9979856c7c3b4f9a3565d55d4f8"
+version = "0.9.61"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "313752393519e876837e09e1fa183ddef0be7735868dced3196f4472d536277f"
 dependencies = [
+ "autocfg",
  "cc",
  "libc",
  "pkg-config",
@@ -196,7 +200,7 @@ version = "0.21.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "533dc3379a0f166749ce262a941e9b52ce19c3208729fc6b6cce76aea76d939b"
 dependencies = [
- "lazy_static 1.4.0",
+ "lazy_static",
  "rustler_codegen",
  "rustler_sys",
  "which",
